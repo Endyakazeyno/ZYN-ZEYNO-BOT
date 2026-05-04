@@ -20,28 +20,35 @@ const handler = async (m, { isPrems, conn }) => {
 │
 *╰⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*`);
   }
+  
   let euro = Math.floor(Math.random() * 30) + 20;
   let monete = Math.floor(Math.random() * 4000) + 2000;
   let esperienza = Math.floor(Math.random() * 5000) + 2000; 
+  
   if (isPrems) {
     euro *= 2;
     monete *= 2;
     esperienza *= 2;
   }
+  
   global.db.data.users[m.sender].euro += euro;
   global.db.data.users[m.sender].money += monete;
   global.db.data.users[m.sender].exp += esperienza;
   global.db.data.users[m.sender].lastcofre = new Date() * 1;
+
   const testo = `
 ㅤㅤ⋆｡˚『 ╭ \`FORZIERE\` ╯ 』˚｡⋆\n╭\n│
 │ 『 📦 』 _*Contenuto Forziere:*_
 │ • 🪙 \`Euro:\` *+${euro}*
+│ • 💰 \`Monete:\` *+${monete}*
 │ • ✨ \`Exp:\` *+${esperienza}*
 │
 │ ${isPrems ? '『 👑 』 *BONUS PREMIUM x2!*' : '『 💡 』 _Diventa premium per premi doppi!_'}
 │
 *╰⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*`;
-  await conn.sendFile(m.chat, './media/forziere.png', 'forziere.png', testo, m);
+
+  // Modificato qui: invia solo il messaggio di testo
+  await m.reply(testo);
 };
 
 handler.help = ['forziere'];
