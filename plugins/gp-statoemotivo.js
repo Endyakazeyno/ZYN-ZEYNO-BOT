@@ -262,7 +262,7 @@ FORMATO JSON RICHIESTO:
         }
         
         const analysisTime = ((Date.now() - startTime) / 1000).toFixed(1);
-        report += `> \`vare ✧ bot\``;
+        report += `> \`bloodbot\``;
         global.moodCache.set(cacheKey, { report, timestamp: Date.now() });
         
         return m.reply(report);
