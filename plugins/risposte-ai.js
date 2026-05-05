@@ -1,4 +1,4 @@
-Import OpenAI from 'openai';
+import OpenAI from 'openai';
 
 export const DEFAULT_CONFIG = {
   MAX_HISTORY_LENGTH: 20,
