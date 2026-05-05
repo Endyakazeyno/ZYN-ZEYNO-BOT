@@ -7,10 +7,6 @@ import chalk from 'chalk'
 import NodeCache from 'node-cache'
 import { getAggregateVotesInPollMessage, toJid } from '@realvare/based'
 
-// Importazione del servizio AI (Assicurati che il percorso sia corretto)
-import { createAIService } from './plugins/_ai_service.js' 
-const aiService = createAIService(global.groq_key || 'INSERISCI_QUI_CHIAVE_SE_NON_GLOBALE')
-
 global.ignoredUsersGlobal = new Set()
 global.ignoredUsersGroup = {}
 global.groupSpam = {}
@@ -508,9 +504,6 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
         }
 
         const ___dirname = join(path.dirname(fileURLToPath(import.meta.url)), './plugins')
-        
-        let commandFound = false // Variabile di controllo per l'AI
-
         for (let name in global.plugins) {
             let plugin = global.plugins[name]
             if (!plugin) continue
@@ -574,8 +567,6 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
                     typeof plugin.command === 'string' ? plugin.command === command : false
 
                 if (!isAccept) continue
-                
-                commandFound = true // Abbiamo trovato un comando valido
 
                 if (m.isGroup && (plugin.admin || plugin.botAdmin)) {
                     const freshMetadata = global.groupCache.get(m.chat) || await fetchGroupMetadataWithRetry(this, m.chat)
@@ -781,27 +772,6 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
                 break
             }
         }
-        
-        // --- INTEGRAZIONE AI (DIPLOMATICO) ---
-        // Se non è stato trovato alcun comando e il messaggio non è vuoto
-        if (!commandFound && m.text && !m.fromMe) {
-            try {
-                const aiReply = await aiService.generateReply({
-                    messageText: m.text,
-                    authorName: m.pushName || 'Utente',
-                    chatId: m.chat,
-                    authorId: normalizedSender
-                })
-                
-                if (aiReply) {
-                    await this.sendMessage(m.chat, { text: aiReply }, { quoted: m })
-                }
-            } catch (e) {
-                console.error('[ERRORE AI]:', e)
-            }
-        }
-        // -------------------------------------
-
     } catch (e) {
         console.error(`[ERRORE] Errore nel handler per la chat ${m.chat}, mittente ${m.sender}:`, e)
     } finally {
@@ -899,3 +869,4 @@ watchFile(file, async () => {
     unwatchFile(file)     
     console.log(chalk.bgHex('#3b0d95')(chalk.white.bold("File: 'handler.js' Aggiornato")))
 })
+
