@@ -546,7 +546,9 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
                     chatUpdate,
                     __dirname: ___dirname,
                     __filename
-                })) continue
+                })) {
+                   // Non mettiamo il continue qui per permettere ad altri plugin di agire contemporaneamente (es. IA e Antilink)
+                }
             }
 
             if (typeof plugin !== 'function') continue
@@ -869,4 +871,3 @@ watchFile(file, async () => {
     unwatchFile(file)     
     console.log(chalk.bgHex('#3b0d95')(chalk.white.bold("File: 'handler.js' Aggiornato")))
 })
-
