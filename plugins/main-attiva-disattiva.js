@@ -1,6 +1,5 @@
 import { createAIService } from './risposte-ai.js'; 
 
-// Chiave Groq spezzata
 const p1 = 'gsk_6VlRfuGRq3pG0';
 const p2 = 'RAc8knZWGdyb3FYGlEn';
 const p3 = '0Y9t8U4gg38EGlT';
@@ -51,17 +50,13 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isS
     let type = args[0].toLowerCase();
     const feat = aliasMap.get(type);
     if (!feat) return m.reply(`『 ❌ 』 Modulo *${type}* non trovato.`);
-    
-    // Controllo permessi
     if (feat.perm === PERM.OWNER && !isOwner && !isSam) return m.reply('『 ❌ 』 Accesso negato.');
     if (feat.perm === PERM.ADMIN && !isAdmin && !isOwner && !isSam) return m.reply('『 ❌ 』 Accesso negato.');
-    
     const target = feat.store === 'bot' ? botSettings : chat;
     target[feat.key] = isEnable;
     return m.reply(`*〘 📡 BLD-SYSTEM 〙*\n\nModulo: ${feat.name}\nStato: *${isEnable ? 'ATTIVATO 🟢' : 'DISATTIVATO 🔴'}*`);
   }
 
-  // Menu visualizzazione stati
   const getStatus = (f) => (f.store === 'bot' ? botSettings[f.key] : chat[f.key]) ? '🟢' : '🔴';
   let menu = `┎━━━━━━━━━━━━━━━━━━━━┑\n┃   ✧  *𝐁𝐋𝐃 - 𝐌𝐀𝐒𝐓𝐄𝐑 𝐂𝐎𝐍𝐓𝐑𝐎𝐋* ✧   ┃\n┖━━━━━━━━━━━━━━━━━━━━┙\n\n`;
   featureRegistry.forEach(f => {
@@ -71,31 +66,30 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isS
   return conn.sendMessage(m.chat, { text: menu }, { quoted: m });
 };
 
-// Logica AI automatica
 handler.before = async function (m) {
   if (!m.text || m.fromMe || m.isBaileys) return;
-  if (/^[.!#]/.test(m.text)) return; // Salta se è un comando
+  if (/^[.!#]/.test(m.text)) return;
   
   const chat = global.db.data?.chats?.[m.chat];
-  if (!chat?.ai) return; // Se il modulo AI non è attivo (🔴), esce
+  if (!chat?.ai) return; // Controlla se il modulo AI è acceso
 
-  // Trigger: risponde solo se scrivi "bot" nel messaggio
-  if (!/\bbot\b/i.test(m.text)) return;
+  // Trigger: risponde se lo tagghi o se scrivi "bot"
+  const isMentioned = m.mentionedJid && m.mentionedJid.includes(this.user.jid);
+  const containsBotWord = /\bbot\b/i.test(m.text);
+  
+  if (!isMentioned && !containsBotWord) return;
 
   try {
-    // Effetto "sta scrivendo..."
     await this.sendPresenceUpdate('composing', m.chat);
-    
     const reply = await botAI.generateReply({
       messageText: m.text,
       authorName: m.pushName || 'User',
       chatId: m.chat,
       authorId: m.sender
     });
-    
     if (reply) return this.reply(m.chat, reply, m);
   } catch (e) {
-    console.error('[ERRORE IA PLUGIN]:', e);
+    console.error('ERRORE AI:', e);
   }
 };
 
