@@ -39,7 +39,7 @@ global.errore = '*ERRORE INATTESO*, UTILIZZA IL COMANDO .segnala (errore) per co
 
 /*⭑⭒━━━✦❘༻🌐 LINK 🌐༺❘✦━━━⭒⭑*/
 
-global.repobot ='https//wa.me/393701330693'
+global.repobot ='https://wa.me/393701330693'
 global.gruppo = 'https://chat.whatsapp.com/KdLKg5DoZ2CGrNlbqJRdV9'
 global.insta = 'https://www.instagram.com/bloodvelith'
 
@@ -53,7 +53,7 @@ global.moment = moment
 
 /*⭑⭒━━━✦❘🗝️ API KEYS 🌍༺❘✦━━━⭒⭑*/
 
-global.APIKeys = { // le keys con scritto "varebot" vanno cambiate con keys valide
+global.APIKeys = { 
     spotifyclientid: 'varebot',
     spotifysecret: 'varebot',
     browserless: 'varebot',
@@ -78,19 +78,16 @@ global.APIKeys = { // le keys con scritto "varebot" vanno cambiate con keys vali
 
 /*⭑⭒━━━✦❘༻🪷 SISTEMA XP/EURO 💸༺❘✦━━━⭒⭑*/
 
-global.multiplier = 1 // piu è alto piu è facile guardagnare euro e xp
+global.multiplier = 1 
 
 /*⭑⭒━━━✦❘༻📦 RELOAD 📦༺❘✦━━━⭒⭑*/
 
 let filePath = fileURLToPath(import.meta.url)
 let fileUrl = pathToFileURL(filePath).href
 const reloadConfig = async () => {
-  const cached = moduleCache.get(fileUrl);
-  if (cached) return cached;
   unwatchFile(filePath)
   console.log(chalk.bgHex('#3b0d95')(chalk.white.bold("File: 'config.js' Aggiornato")))
   const module = await import(`${fileUrl}?update=${Date.now()}`)
-  moduleCache.set(fileUrl, module, { ttl: 300 });
   return module;
 }
 watchFile(filePath, reloadConfig)
