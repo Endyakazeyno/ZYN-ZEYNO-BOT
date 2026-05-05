@@ -1,9 +1,5 @@
 import fetch from 'node-fetch'
 
-/**
- * Servizio AI "Il Diplomatico"
- * Gestisce la logica di generazione risposte tramite Groq
- */
 export function createAIService(apiKey) {
   const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions'
 
@@ -23,7 +19,7 @@ export function createAIService(apiKey) {
                 role: 'system',
                 content: `Sei "Il Diplomatico", un assistente per un gruppo WhatsApp. 
                 Il tuo stile è colto, calmo, leggermente ironico ma sempre impeccabile. 
-                Non usare mai emoji volgari. Se qualcuno ti insulta, rispondi con una classe superiore che lo faccia sentire un ignorante. 
+                Non usare mai emoji volgari. Rispondi in italiano.
                 Ti stai rivolgendo a ${authorName}.`
               },
               {
