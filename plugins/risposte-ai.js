@@ -25,8 +25,8 @@ class AIService {
 
     const cleanText = messageText.toLowerCase();
 
-    // Controllo per la generazione di immagini
-    if (cleanText.includes("genera immagine") || cleanText.includes("crea immagine")) {
+    // Controllo per la generazione di immagini con protezione optional chaining
+    if (cleanText?.includes("genera immagine") || cleanText?.includes("crea immagine")) {
       return await this.generateImage(messageText);
     }
 
