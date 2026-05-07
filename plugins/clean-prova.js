@@ -7,27 +7,29 @@ let handler = async (m, { conn, args, isAdmin, isOwner }) => {
   if (amount > 500) amount = 500
 
   try {
-    let waitMsg = await conn.reply(m.chat, `『 🧹 』 *Inizio pulizia...*\nRimozione di ${amount} messaggi in corso.`, m)
+    let waitMsg = await conn.reply(m.chat, `『 🧹 』 *Tentativo di pulizia...*\nRecupero messaggi dalla cache in corso.`, m)
 
     let messages = []
-    try {
-      let fetched = await conn.fetchMessagesFromList(m.chat, amount)
-      messages = fetched.filter(v => v.key && v.key.id)
-    } catch {
+    
+    if (conn.store && conn.store.messages && conn.store.messages[m.chat]) {
+      messages = Object.values(conn.store.messages[m.chat]).slice(-amount)
+    } else if (conn.messages && conn.messages[m.chat]) {
+      messages = Object.values(conn.messages[m.chat]).slice(-amount)
+    } else {
       try {
-        let loaded = await conn.loadMessages(m.chat, amount)
-        messages = loaded.filter(v => v.key && v.key.id)
+        messages = await conn.loadMessages(m.chat, amount)
       } catch {
         messages = []
       }
     }
 
-    if (messages.length === 0) {
-      return conn.reply(m.chat, '『 ❌ 』 Nessun messaggio trovato nella cronologia.', m)
+    if (!messages || messages.length === 0) {
+      return conn.reply(m.chat, '『 ❌ 』 La cache del bot è vuota. Non posso vedere i messaggi inviati prima del mio avvio.', m)
     }
 
+    let deletedCount = 0
     for (let msg of messages) {
-      if (msg.key.id === waitMsg.key.id || msg.key.id === m.key.id) continue
+      if (!msg.key || msg.key.id === waitMsg.key.id) continue
       try {
         await conn.sendMessage(m.chat, { 
           delete: {
@@ -37,13 +39,16 @@ let handler = async (m, { conn, args, isAdmin, isOwner }) => {
             participant: msg.key.participant || msg.participant || msg.key.remoteJid
           }
         })
+        deletedCount++
         await new Promise(resolve => setTimeout(resolve, 150))
       } catch {
         continue
       }
     }
 
-    let finalMsg = await conn.reply(m.chat, '『 ✅ 』 *Pulizia completata!*', m)
+    if (deletedCount === 0) return conn.reply(m.chat, '『 ⚠️ 』 Trovati messaggi ma impossibile eliminarli (forse troppo vecchi).', m)
+
+    let finalMsg = await conn.reply(m.chat, `『 ✅ 』 *Pulizia completata!*\nRimossi ${deletedCount} messaggi.`, m)
 
     setTimeout(async () => {
       try {
@@ -53,8 +58,7 @@ let handler = async (m, { conn, args, isAdmin, isOwner }) => {
     }, 5000)
 
   } catch (err) {
-    console.error(err)
-    conn.reply(m.chat, '『 ❌ 』 Errore durante l\'esecuzione. Assicurati che il bot sia admin.', m)
+    conn.reply(m.chat, '『 ❌ 』 Errore imprevisto nella gestione della memoria.', m)
   }
 }
 
