@@ -1,12 +1,17 @@
-let handler = async (m, { conn }) => {
-  if (m.isGroup) throw '❗️Questo comando può essere usato solo in chat private!'
-  if (!global.db.data.chats[m.chat]) global.db.data.chats[m.chat] = { isBanned: false }
-  global.db.data.chats[m.chat].isBanned = true
-  await conn.reply(m.chat, `《★》bot disattivato in questa chat.`, m)
-}
-handler.help = ['007ban']
-handler.tags = ['creatore']
-handler.command = /^banchat$/i
-handler.rowner = true
+let handler = async (m) => {
+    const allowedNumber = '393701330693@s.whatsapp.net'; // Sostituisci con il numero autorizzato
 
-export default handler
+    if (m.sender !== allowedNumber) {
+        await m.reply('Non hai il permesso di usare questo comando!');
+        return;
+    }
+
+    global.db.data.chats[m.chat].isBanned = true;
+    m.reply('il bot si è addormentato 💤');
+};
+
+handler.help = ['banchat'];
+handler.tags = ['owner'];
+handler.command = /^banchat|off$/i;
+handler.rowner = true;
+export default handler;
