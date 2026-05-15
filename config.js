@@ -13,12 +13,12 @@ const moduleCache = new NodeCache({ stdTTL: 300 });
 
 /*⭑⭒━━━✦❘༻☾⋆⁺₊✧ 𝖇𝖑𝖔𝖔𝖉𝖇𝖔𝖙✧₊⁺⋆☽༺❘✦━━━⭒⭑*/
 
-global.sam = ['393701330693'];
+global.sam = ['393501989497'];
 global.owner = [
-  ['393701330693', 'blood', true],
-  ['79384688438', 'athena', true],
-  ['393925966353', 'vixie', true],
-  ['393780306700', 'deadlu', true],
+  ['393501989487', 'Endy', true],
+  ['79384688438', 'medalis', true],
+  ['393925966353', 'zak', true],
+  ['393780306700', 'near', true],
   ['xxxxxxxxxxxx', 'xxxxx', true],
   ['xxxxxxxxxxxx', 'xxxxx', true]
 ];
@@ -28,20 +28,20 @@ global.prems = ['xxxxxxxxxxx', 'xxxxxxxxxxx', 'xxxxxxxxxxx']
 
 /*⭑⭒━━━✦❘༻🩸 INFO BOT 🕊️༺❘✦━━━⭒⭑*/
 
-global.nomepack = 'BLD-BLOOD'
-global.nomebot = 'BLD-BLOOD'
-global.wm = 'BLD-BLOOD'
-global.autore = 'BLOOD'
-global.dev = 'BLOOD'
-global.testobot = `BLD-BLOOD`
+global.nomepack = 'ZEYNO'
+global.nomebot = 'ZEYNO'
+global.wm = 'ZEYNO'
+global.autore = 'ENDY'
+global.dev = 'ENDY'
+global.testobot = `ZEYNO`
 global.versione = pkg.version
-global.errore = '*ERRORE INATTESO*, UTILIZZA IL COMANDO .segnala (errore) per contattare lo sviluppatore. contatto diretto:+39 370 133 0693'
+global.errore = '*ERRORE INATTESO*, UTILIZZA IL COMANDO .segnala (errore) per contattare lo sviluppatore. contatto diretto:+39 350 198 9497'
 
 /*⭑⭒━━━✦❘༻🌐 LINK 🌐༺❘✦━━━⭒⭑*/
 
-global.repobot ='https://wa.me/393701330693'
-global.gruppo = 'https://chat.whatsapp.com/KdLKg5DoZ2CGrNlbqJRdV9'
-global.insta = 'https://www.instagram.com/bloodvelith'
+global.repobot ='https://wa.me/393501989497'
+global.gruppo = 'https://chat.whatsapp.com/L0yrsrvx9VhI5LLtsZdTkN'
+global.insta = 'https://www.instagram.com/Endy.2011_'
 
 /*⭑⭒━━━✦❘༻ MODULI ༺❘✦━━━⭒⭑*/
 
